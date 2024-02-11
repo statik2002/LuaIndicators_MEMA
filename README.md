@@ -12,4 +12,4 @@
 
 ## Поддержать автора можно используя этот QR
 
-![Поддержать](qrCode.png)
+<img src="qrCode.png" alt="donate" width="300"/>
