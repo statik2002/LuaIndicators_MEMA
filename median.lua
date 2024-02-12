@@ -1,33 +1,43 @@
 Settings = {
     Name = "MEMA",
-    period = 10
+    period = 30
 }
 
 function Init()
+    Data = {}
+    CurrentBar = 0
     return 1
 end
 
 function OnCalculate(index)
+    if CurrentBar ~= index then
+        CurrentBar = index
+        local median = Repaint(index)
+        return median
+    else
+        return nil
+    end
+end
+
+function Repaint(index)
     if index < Settings.period then
         return nil
     else
-        local summ = 0
         local median = 0
-        local data = {}
+        Data = {}
         local middle = 0
         for i = index-Settings.period+1, index do
-            summ = summ + C(i)
-            table.insert(data, C(i))
+            table.insert(Data, C(i))
         end
-        table.sort(data)
+        table.sort(Data)
         if Settings.period % 2 == 0 then
             -- Четный размер выборки
             middle = Settings.period / 2 + 1
-            median = (data[middle] + data[middle+1]) / 2
+            median = (Data[middle] + Data[middle+1]) / 2
         else    
             -- Нечетный размер выборки
             middle = math.ceil(Settings.period / 2) + 1
-            median = data[middle]
+            median = Data[middle]
         end
 
         return median
